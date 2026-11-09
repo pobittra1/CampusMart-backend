@@ -11,3 +11,47 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum ProductCondition {
+  NEW
+  USED
+}
+
+enum ProductStatus {
+  SOLD
+  AVAILABLE
+}
+
+model Product {
+  id          String           @id @default(uuid())
+  name        String
+  description String
+  price       Decimal          @db.Decimal(10, 2)
+  imageUrl    String?
+  condition   ProductCondition @default(USED)
+  status      ProductStatus    @default(AVAILABLE)
+
+  sellerId   String
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // indexing here for better search performance
+  @@index([sellerId])
+  @@index([categoryId])
+  // table naming into database
+  @@map("products")
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // table naming into database
+  @@map("categories")
+}
