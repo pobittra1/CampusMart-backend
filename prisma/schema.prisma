@@ -31,7 +31,7 @@ model Product {
   condition   ProductCondition @default(USED)
   status      ProductStatus    @default(AVAILABLE)
 
-  sellerId   String
+  sellerId   String // manage from better auth
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
   createdAt  DateTime @default(now())
@@ -53,5 +53,5 @@ model Category {
   updatedAt   DateTime  @updatedAt
 
   // table naming into database
-  @@map("categories")
+  @@map("category")
 }
