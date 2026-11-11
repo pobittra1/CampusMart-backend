@@ -4,7 +4,11 @@ import { productService } from "./product.service";
 const createProduct = async (req: Request, res: Response) => {
   try {
     const result = await productService.createProduct(req.body);
-    res.status(201).json(result);
+    res.status(201).json({
+      success: true,
+      message: "Product created successfully !",
+      data: result,
+    });
   } catch (error) {
     res.status(400).json({
       error: "Product creation failed",
