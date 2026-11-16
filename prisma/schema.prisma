@@ -71,13 +71,14 @@ model Category {
 model SellerApplication {
   id     String            @id @default(uuid())
   userId String
+  user   User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   reason String?
   status ApplicationStatus @default(PENDING)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([userId])
+  @@index([userId, status])
   @@map("seller_application")
 }
 
@@ -94,6 +95,8 @@ model User {
 
   role  Role    @default(BUYER)
   phone String?
+
+  sellerApplications SellerApplication[]
 
   @@unique([email])
   @@map("user")
