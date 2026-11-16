@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "typecheck": "bun check",
-    "dev": "bunx tsx watch src/server.ts"
+    "dev": "bunx tsx watch src/server.ts",
+     "seed:admin": "bunx tsx src/scripts/seedAdmin.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",

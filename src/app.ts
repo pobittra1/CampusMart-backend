@@ -5,6 +5,7 @@ import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
 import cors from "cors";
 import { sellerRouter } from "./modules/seller/seller.router";
+import { adminRouter } from "./modules/admin/admin.router";
 
 const app = express();
 app.use(express.json());
@@ -25,6 +26,9 @@ app.use("/category", categoryRouter);
 
 // for seller
 app.use("/api/seller", sellerRouter);
+
+// for admin
+app.use("/api/admin", adminRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World !");

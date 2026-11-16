@@ -25,4 +25,4 @@ router.patch(
   adminController.rejectSeller,
 );
 
-export default router;
+export const adminRouter = router;
