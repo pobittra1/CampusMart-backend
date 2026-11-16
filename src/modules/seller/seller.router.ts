@@ -5,3 +5,5 @@ import { sellerController } from "./seller.controller";
 
 const router = express.Router();
 router.post("/apply", auth(userRole.BUYER), sellerController.applyForSeller);
+
+export const sellerRouter = router;
