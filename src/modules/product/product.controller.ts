@@ -3,6 +3,7 @@ import { productService } from "./product.service";
 
 const createProduct = async (req: Request, res: Response) => {
   try {
+    console.log(req.user);
     const result = await productService.createProduct(req.body);
     res.status(201).json({
       success: true,

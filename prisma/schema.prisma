@@ -22,6 +22,18 @@ enum ProductStatus {
   AVAILABLE
 }
 
+enum Role {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model Product {
   id          String           @id @default(uuid())
   name        String
@@ -56,6 +68,19 @@ model Category {
   @@map("category")
 }
 
+model SellerApplication {
+  id     String            @id @default(uuid())
+  userId String
+  reason String?
+  status ApplicationStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("seller_application")
+}
+
 model User {
   id            String    @id
   name          String
@@ -67,7 +92,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  role  String? @default("BUYER")
+  role  Role    @default(BUYER)
   phone String?
 
   @@unique([email])
