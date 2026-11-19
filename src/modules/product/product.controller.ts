@@ -18,6 +18,23 @@ const createProduct = async (req: Request, res: Response) => {
   }
 };
 
+const getAllPost = async (req: Request, res: Response) => {
+  try {
+    const result = await productService.getAllPost();
+    res.status(200).json({
+      success: true,
+      message: "All Products retrive successfully!",
+      data: result,
+    });
+  } catch (error) {
+    res.status(404).json({
+      error: "Product retrive failed!",
+      details: error,
+    });
+  }
+};
+
 export const productController = {
   createProduct,
+  getAllPost,
 };

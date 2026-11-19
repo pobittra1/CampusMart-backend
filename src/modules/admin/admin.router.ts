@@ -13,7 +13,7 @@ router.get(
 
 // Approve seller application
 router.patch(
-  "/seller-applications/:id/approve",
+  "/seller-applications/:id/approve", // this id buyer application_id who want to being seller
   auth("ADMIN"),
   adminController.approveSeller,
 );

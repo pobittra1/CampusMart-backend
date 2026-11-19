@@ -8,6 +8,6 @@ import auth from "../../middlewares/auth";
 import { userRole } from "../../types/auth";
 
 const router = express.Router();
-
+router.get("/", productController.getAllPost);
 router.post("/", auth(userRole.BUYER), productController.createProduct);
 export const productRouter = router;
