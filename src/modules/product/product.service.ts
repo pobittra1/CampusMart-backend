@@ -9,8 +9,16 @@ const createProduct = async (
   });
 };
 
-const getAllPost = async () => {
-  const result = await prisma.product.findMany();
+const getAllPost = async (payload: { search: string | undefined }) => {
+  console.log(payload);
+  const result = await prisma.product.findMany({
+    where: {
+      name: {
+        contains: payload.search,
+        mode: "insensitive",
+      },
+    },
+  });
   return result;
 };
 

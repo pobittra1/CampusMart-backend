@@ -20,7 +20,9 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getAllPost = async (req: Request, res: Response) => {
   try {
-    const result = await productService.getAllPost();
+    const { search } = req.query;
+    const searchStr = typeof search === "string" ? search : undefined;
+    const result = await productService.getAllPost({ search: searchStr });
     res.status(200).json({
       success: true,
       message: "All Products retrive successfully!",
