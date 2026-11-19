@@ -13,10 +13,30 @@ const getAllPost = async (payload: { search: string | undefined }) => {
   console.log(payload);
   const result = await prisma.product.findMany({
     where: {
-      name: {
-        contains: payload.search,
-        mode: "insensitive",
-      },
+      OR: [
+        {
+          name: {
+            contains: payload.search,
+            mode: "insensitive",
+          },
+        },
+        {
+          description: {
+            contains: payload.search,
+            mode: "insensitive",
+          },
+        },
+        {
+          category: {
+            is: {
+              name: {
+                contains: payload.search,
+                mode: "insensitive",
+              },
+            },
+          },
+        },
+      ],
     },
   });
   return result;
