@@ -20,12 +20,18 @@ const getAllPost = async ({
   isFeatured,
   status,
   sellerId,
+  page,
+  limit,
+  skip,
 }: {
   search?: string;
   condition?: ProductCondition;
   isFeatured: boolean | undefined;
   status: ProductStatus | undefined;
   sellerId: string | undefined;
+  page: number;
+  limit: number;
+  skip: number;
 }) => {
   console.log({ search, condition });
 
@@ -81,6 +87,8 @@ const getAllPost = async ({
     });
   }
   const result = await prisma.product.findMany({
+    take: limit,
+    skip,
     where: {
       AND: andConditions,
     },
