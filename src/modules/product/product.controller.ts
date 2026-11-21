@@ -42,11 +42,13 @@ const getAllPost = async (req: Request, res: Response) => {
       : undefined;
 
     const status = req.query.status as ProductStatus;
+    const sellerId = req.params.sellerId as string | undefined;
     const result = await productService.getAllPost({
       search: searchStr,
       condition: conditionStr,
       isFeatured,
       status,
+      sellerId,
     });
     res.status(200).json({
       success: true,

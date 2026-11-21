@@ -19,11 +19,13 @@ const getAllPost = async ({
   condition,
   isFeatured,
   status,
+  sellerId,
 }: {
   search?: string;
   condition?: ProductCondition;
   isFeatured: boolean | undefined;
   status: ProductStatus | undefined;
+  sellerId: string | undefined;
 }) => {
   console.log({ search, condition });
 
