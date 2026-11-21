@@ -42,6 +42,7 @@ model Product {
   imageUrl    String?
   condition   ProductCondition @default(USED)
   status      ProductStatus    @default(AVAILABLE)
+  isFeatured  Boolean          @default(false)
 
   sellerId   String // manage from better auth
   categoryId String

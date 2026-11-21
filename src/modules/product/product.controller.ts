@@ -1,5 +1,9 @@
 import type { Request, Response } from "express";
 import { productService } from "./product.service";
+import {
+  ProductCondition,
+  ProductStatus,
+} from "../../../generated/prisma/enums";
 
 const createProduct = async (req: Request, res: Response) => {
   try {
@@ -20,9 +24,18 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getAllPost = async (req: Request, res: Response) => {
   try {
-    const { search } = req.query;
+    const { search, condition } = req.query;
+
     const searchStr = typeof search === "string" ? search : undefined;
-    const result = await productService.getAllPost({ search: searchStr });
+    const conditionStr =
+      typeof condition === "string"
+        ? (condition as ProductCondition)
+        : undefined;
+
+    const result = await productService.getAllPost({
+      search: searchStr,
+      condition: conditionStr,
+    });
     res.status(200).json({
       success: true,
       message: "All Products retrive successfully!",
@@ -36,7 +49,34 @@ const getAllPost = async (req: Request, res: Response) => {
   }
 };
 
+const toggleFeatured = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (!id || Array.isArray(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product ID!",
+      });
+    }
+
+    const result = await productService.toggleFeatured(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Product featured status updated successfully!",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update product featured status!",
+      error: error.message,
+    });
+  }
+};
 export const productController = {
   createProduct,
   getAllPost,
+  toggleFeatured,
 };

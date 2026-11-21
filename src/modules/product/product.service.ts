@@ -1,4 +1,9 @@
-import type { Product } from "../../../generated/prisma/client";
+import {
+  ProductCondition,
+  type Product,
+  type ProductStatus,
+} from "../../../generated/prisma/client";
+import type { ProductWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
 const createProduct = async (
@@ -9,20 +14,29 @@ const createProduct = async (
   });
 };
 
-const getAllPost = async (payload: { search: string | undefined }) => {
-  console.log(payload);
-  const result = await prisma.product.findMany({
-    where: {
+const getAllPost = async ({
+  search,
+  condition,
+}: {
+  search?: string;
+  condition?: ProductCondition;
+}) => {
+  console.log({ search, condition });
+
+  const andConditions: ProductWhereInput[] = [];
+
+  if (search) {
+    andConditions.push({
       OR: [
         {
           name: {
-            contains: payload.search,
+            contains: search,
             mode: "insensitive",
           },
         },
         {
           description: {
-            contains: payload.search,
+            contains: search,
             mode: "insensitive",
           },
         },
@@ -30,19 +44,51 @@ const getAllPost = async (payload: { search: string | undefined }) => {
           category: {
             is: {
               name: {
-                contains: payload.search,
+                contains: search,
                 mode: "insensitive",
               },
             },
           },
         },
       ],
+    });
+  }
+
+  // Need to be exact match. / send condition value from backend NEW or USED capitalize
+  if (condition) {
+    andConditions.push({
+      condition: {
+        equals: condition as ProductCondition,
+      },
+    });
+  }
+  const result = await prisma.product.findMany({
+    where: {
+      AND: andConditions,
     },
   });
   return result;
 };
 
+const toggleFeatured = async (id: string) => {
+  const product = await prisma.product.findUnique({
+    where: { id },
+  });
+
+  if (!product) {
+    throw new Error("Product not found!");
+  }
+
+  return await prisma.product.update({
+    where: { id },
+    data: {
+      isFeatured: !product.isFeatured,
+    },
+  });
+};
+
 export const productService = {
   createProduct,
   getAllPost,
+  toggleFeatured,
 };
