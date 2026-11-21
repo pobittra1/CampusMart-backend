@@ -47,6 +47,8 @@ const getAllPost = async (req: Request, res: Response) => {
     const page = Number(req.query.page ?? 1);
     const limit = Number(req.query.limit ?? 10);
     const skip = (page - 1) * limit;
+    const shortBy = req.query.shortBy as string | undefined;
+    const shortOrder = req.query.shortOrder as string | undefined;
     const result = await productService.getAllPost({
       search: searchStr,
       condition: conditionStr,
@@ -56,6 +58,8 @@ const getAllPost = async (req: Request, res: Response) => {
       page,
       limit,
       skip,
+      shortBy,
+      shortOrder,
     });
     res.status(200).json({
       success: true,

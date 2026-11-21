@@ -23,6 +23,8 @@ const getAllPost = async ({
   page,
   limit,
   skip,
+  shortBy,
+  shortOrder,
 }: {
   search?: string;
   condition?: ProductCondition;
@@ -32,6 +34,8 @@ const getAllPost = async ({
   page: number;
   limit: number;
   skip: number;
+  shortBy: string | undefined;
+  shortOrder: string | undefined;
 }) => {
   console.log({ search, condition });
 
@@ -92,6 +96,12 @@ const getAllPost = async ({
     where: {
       AND: andConditions,
     },
+    orderBy:
+      shortBy && shortOrder
+        ? {
+            [shortBy]: shortOrder,
+          }
+        : { createdAt: "desc" },
   });
   return result;
 };
