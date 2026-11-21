@@ -41,10 +41,12 @@ const getAllPost = async (req: Request, res: Response) => {
           : undefined
       : undefined;
 
+    const status = req.query.status as ProductStatus;
     const result = await productService.getAllPost({
       search: searchStr,
       condition: conditionStr,
       isFeatured,
+      status,
     });
     res.status(200).json({
       success: true,
