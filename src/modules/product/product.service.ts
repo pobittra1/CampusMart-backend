@@ -17,9 +17,11 @@ const createProduct = async (
 const getAllPost = async ({
   search,
   condition,
+  isFeatured,
 }: {
   search?: string;
   condition?: ProductCondition;
+  isFeatured: boolean | undefined;
 }) => {
   console.log({ search, condition });
 
@@ -60,6 +62,12 @@ const getAllPost = async ({
       condition: {
         equals: condition as ProductCondition,
       },
+    });
+  }
+
+  if (typeof isFeatured === "boolean") {
+    andConditions.push({
+      isFeatured,
     });
   }
   const result = await prisma.product.findMany({

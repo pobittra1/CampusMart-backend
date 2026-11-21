@@ -27,14 +27,24 @@ const getAllPost = async (req: Request, res: Response) => {
     const { search, condition } = req.query;
 
     const searchStr = typeof search === "string" ? search : undefined;
+
     const conditionStr =
       typeof condition === "string"
         ? (condition as ProductCondition)
         : undefined;
 
+    const isFeatured = req.query.isFeatured
+      ? req.query.isFeatured === "true"
+        ? true
+        : req.query.isFeatured === "false"
+          ? false
+          : undefined
+      : undefined;
+
     const result = await productService.getAllPost({
       search: searchStr,
       condition: conditionStr,
+      isFeatured,
     });
     res.status(200).json({
       success: true,
