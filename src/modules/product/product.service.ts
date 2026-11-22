@@ -90,7 +90,7 @@ const getAllPost = async ({
       status,
     });
   }
-  const result = await prisma.product.findMany({
+  const allPost = await prisma.product.findMany({
     take: limit,
     skip,
     where: {
@@ -100,7 +100,21 @@ const getAllPost = async ({
       [sortBy]: sortOrder,
     },
   });
-  return result;
+
+  const totalData = await prisma.product.count({
+    where: {
+      AND: andConditions,
+    },
+  });
+  return {
+    data: allPost,
+    pagination: {
+      totalData,
+      currentPage: page,
+      limit,
+      totalPages: Math.ceil(totalData / limit),
+    },
+  };
 };
 
 const toggleFeatured = async (id: string) => {
