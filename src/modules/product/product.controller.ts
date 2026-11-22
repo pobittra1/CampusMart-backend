@@ -4,6 +4,7 @@ import {
   ProductCondition,
   ProductStatus,
 } from "../../../generated/prisma/enums";
+import paginationSortingHelper from "../../helpers/paginationSortingHelper";
 
 const createProduct = async (req: Request, res: Response) => {
   try {
@@ -44,11 +45,10 @@ const getAllPost = async (req: Request, res: Response) => {
     const status = req.query.status as ProductStatus;
     const sellerId = req.params.sellerId as string | undefined;
 
-    const page = Number(req.query.page ?? 1);
-    const limit = Number(req.query.limit ?? 10);
-    const skip = (page - 1) * limit;
-    const shortBy = req.query.shortBy as string | undefined;
-    const shortOrder = req.query.shortOrder as string | undefined;
+    const options = paginationSortingHelper(req.query);
+    const { page, limit, skip, sortBy, sortOrder } = options;
+
+    console.log("options:", options);
     const result = await productService.getAllPost({
       search: searchStr,
       condition: conditionStr,
@@ -58,8 +58,8 @@ const getAllPost = async (req: Request, res: Response) => {
       page,
       limit,
       skip,
-      shortBy,
-      shortOrder,
+      sortBy,
+      sortOrder,
     });
     res.status(200).json({
       success: true,
