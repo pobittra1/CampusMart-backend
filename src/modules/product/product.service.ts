@@ -37,8 +37,6 @@ const getAllPost = async ({
   sortBy: string;
   sortOrder: string;
 }) => {
-  console.log({ search, condition });
-
   const andConditions: ProductWhereInput[] = [];
 
   if (search) {
@@ -117,6 +115,14 @@ const getAllPost = async ({
   };
 };
 
+const getProductById = async (productId: string) => {
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+  return product;
+};
 const toggleFeatured = async (id: string) => {
   const product = await prisma.product.findUnique({
     where: { id },
@@ -137,5 +143,6 @@ const toggleFeatured = async (id: string) => {
 export const productService = {
   createProduct,
   getAllPost,
+  getProductById,
   toggleFeatured,
 };

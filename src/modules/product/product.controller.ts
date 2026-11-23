@@ -74,6 +74,26 @@ const getAllPost = async (req: Request, res: Response) => {
   }
 };
 
+const getProductById = async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.params;
+    if (!productId) {
+      throw new Error("Product id is required");
+    }
+    const result = await productService.getProductById(productId as string);
+    res.status(200).json({
+      success: true,
+      message: "Product retrive successfully!",
+      data: result,
+    });
+  } catch (error) {
+    res.status(404).json({
+      error: "Product retrive failed!",
+      details: error,
+    });
+  }
+};
+
 const toggleFeatured = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -103,5 +123,6 @@ const toggleFeatured = async (req: Request, res: Response) => {
 export const productController = {
   createProduct,
   getAllPost,
+  getProductById,
   toggleFeatured,
 };
